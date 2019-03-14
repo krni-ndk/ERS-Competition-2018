@@ -1,0 +1,19 @@
+{
+  "name": "ers-competition-2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niko-kriznik/ERS-Competition-2018.git"
+  },
+  "author": "Niko Kriznik",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/niko-kriznik/ERS-Competition-2018/issues"
+  },
+  "homepage": "https://github.com/niko-kriznik/ERS-Competition-2018#readme"
+}
