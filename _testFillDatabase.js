@@ -15,4 +15,4 @@ setInterval(function () {
         if (xError) console.log(xError);
         console.log(query); 
     });
-}, 2000);
+}, 1000);

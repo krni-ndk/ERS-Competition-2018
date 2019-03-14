@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Tekmovanje ERS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
-    Test
+    <button onclick="getData(100);">Get</button>
+    <button onclick="displayData();">Dis</button>
+    <section id="temperatures">
+        <div class="container">
+            <div class="chartWrapper">
+                <canvas id="tempChart"></canvas>
+            </div>
+        </div>
+    </section>
+    <section id="humidity">
+        <div class="container">
+            <div class="chartWrapper">
+                <canvas id="humChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
