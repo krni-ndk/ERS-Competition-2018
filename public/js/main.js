@@ -1,26 +1,7 @@
-var dataResolution = 5; // Time in sec
 var retrievedData = [];
 
 var tempChart;
 var humChart;
-
-let chartOptions = {
-    scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-        }]
-    },
-    tooltips: {
-        callbacks: {
-            label: function (toolTips, data) {
-                return toolTips.yLabel + " °C";
-            }
-        }
-    }
-};
-
 
 $(function () {
     let tempChartCTX = document.getElementById('tempChart').getContext('2d');
@@ -48,6 +29,11 @@ $(function () {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
                     }
                 }]
             },
@@ -84,6 +70,11 @@ $(function () {
                     ticks: {
                         beginAtZero: true
                     }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
                 }]
             },
             tooltips: {
@@ -95,20 +86,44 @@ $(function () {
             }
         }
     });
+    getData();
+
+    $("form[name='timeForm']").submit(function (e) {
+        e.preventDefault(); // Disables redirect
+        getData();
+    });
+
+    $("input[name='timeResInput']").change(function () {
+        displayData();
+    });
 });
 
-function getData(aTimePeriod = 1) {
+function getData() {
+    let timePeriod = parseInt($("input[name='timePeriod']").val(), 10);
+    retrievedData = [];
     $.ajax({
         type: 'GET',
-        url: `/api/data?timePeriod=${aTimePeriod}`,
+        url: `/api/data?timePeriod=${timePeriod}`,
         data: {
             get_param: 'timePeriod'
         },
         dataType: 'json',
         success: function (data) {
-            $.each(data.data, function (index, element) {
-                retrievedData.push(element);
-            });
+            if (data.success == "true") {
+                $.each(data.data, function (index, element) {
+                    retrievedData.push(element);
+                });
+                displayData();
+                console.log(data.success);
+            }
+            if (data.success == "false") {
+                let errorPar = document.createElement('p');
+                let error = document.createTextNode(data.message);
+                errorPar.appendChild(error);
+                document.getElementById('errorContainer').appendChild(errorPar);
+                console.log(data.success);
+            }
+            console.log(data.success);
         }
     });
 }
@@ -116,6 +131,7 @@ function getData(aTimePeriod = 1) {
 function displayData() {
     var minTime = retrievedData[0].time_ms;
     var maxTime = retrievedData[retrievedData.length - 1].time_ms;
+    let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
     var resMs = dataResolution * 1000 // From seconds to miliseconds
     var dataTime = minTime;
 
@@ -128,14 +144,37 @@ function displayData() {
     for (let i = 0; i < retrievedData.length; i++) {
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
             tempChart.data.datasets[0].data.push(retrievedData[i].temp);
-            tempChart.data.labels.push(retrievedData[i].time_ms);
+            tempChart.data.labels.push(msToTime(retrievedData[i].time_ms));
             tempChart.update();
 
             humChart.data.datasets[0].data.push(retrievedData[i].hum);
-            humChart.data.labels.push(retrievedData[i].time_ms);
+            humChart.data.labels.push(msToTime(retrievedData[i].time_ms));
             humChart.update();
 
             dataTime += resMs;
         }
     }
+}
+
+function msToTime(aMs) {
+    let date = new Date(aMs);
+    let txt = date.toLocaleTimeString('sl-SI');
+    return txt;
+}
+
+function valForm() {
+    let timeForm = document.forms["timeForm"];
+    let timePeriodInput = timeForm["timePeriod"];
+    let errorCon = document.getElementById('errorContainer');
+    let errorText;
+    if (timePeriodInput.value == "") {
+        errorText = document.createElement('p');
+        let errorTextNode = document.createTextNode('Vnesite vrednost, ki naj bo vecja kot 1 min');
+        errorText.appendChild(errorTextNode);
+        errorCon.appendChild(errorText);
+
+        return false;
+    }
+    errorCon.removeChild(errorText);
+    return true;
 }

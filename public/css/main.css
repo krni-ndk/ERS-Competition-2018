@@ -6,3 +6,23 @@
 #tempChart,
 #humChart {
 }
+
+#hero {
+    background-color: lightblue;
+    padding: 20px;
+    text-align: center;
+}
+
+#hero h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+#hero #timePeriodInput {
+
+}
+
+#temperatures, #humidity {
+    padding: 100px;
+}

@@ -34,19 +34,20 @@ app.get('/api/data', function (aReq, aRes, xErr) {
         if (xError) {
             console.log(xError);
             aRes.status(500).send({
-                sucess: "false",
+                success: "false",
                 message: "An error occured while retrieving the data"
             });
         }
 
-        if((aResults === undefined) || (aResults.lenght === 0)) {
+
+        if(typeof(aResults[0]) == 'undefined') {
             aRes.status(404).send({
-                sucess: "false",
+                success: "false",
                 message: "Dataset is empty"
             });
         } else {
             aRes.status(200).send({
-                sucess: "true",
+                success: "true",
                 message: "Data retrieved succesfully",
                 data: aResults
             });

@@ -11,21 +11,38 @@
 </head>
 
 <body>
-    <button onclick="getData(100);">Get</button>
-    <button onclick="displayData();">Dis</button>
+    <section id="hero">
+        <div class="container">
+            <h2>Choose a time:</h2>
+            <form name="timeForm" method="GET" action="/api/data">
+                <label class="timeLabel">
+                    Custom (min):
+                    <input type="number" name="timePeriod" min="1" value="15">
+                    <input type="submit" name="submit" value="Get data">
+                </label>
+            </form>
+            <div id="errorContainer"></div>
+            <label class="timeRes">
+                    Custom resolution (sec):
+                    <input type="number" name="timeResInput" min="5" value="5">
+            </label>
+        </div>
+    </section>
     <section id="temperatures">
-        
+        <div class="container">
+            <h3>Temperature:</h3>
             <div class="chartWrapper">
                 <canvas id="tempChart"></canvas>
             </div>
-        
+        </div>
     </section>
     <section id="humidity">
-        
+        <div class="container">
+            <h3>Humidity:</h3>
             <div class="chartWrapper">
                 <canvas id="humChart"></canvas>
             </div>
-        
+        </div>
     </section>
 
     <script src="js/jquery-3.3.1.min.js"></script>
