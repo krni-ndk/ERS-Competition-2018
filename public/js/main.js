@@ -43,7 +43,57 @@ $(function () {
             }]
 
         },
-        options: chartOptions
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (toolTips, data) {
+                        return toolTips.yLabel + " °C";
+                    }
+                }
+            }
+        }
+    });
+
+    humChart = new Chart(humChartCTX, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Humidity',
+                data: [],
+                backgroundColor: [
+                    'rgba(250, 50, 200, 0.15)'
+                ],
+                borderColor: [
+                    'rgba(250, 0, 100, 1.0)'
+                ],
+                borderWidth: 5
+            }]
+
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (toolTips, data) {
+                        return toolTips.yLabel + " %";
+                    }
+                }
+            }
+        }
     });
 });
 
@@ -69,11 +119,22 @@ function displayData() {
     var resMs = dataResolution * 1000 // From seconds to miliseconds
     var dataTime = minTime;
 
+    // First empty data arrays
+    tempChart.data.datasets[0].data = [];
+    tempChart.data.labels = [];
+    humChart.data.datasets[0].data = [];
+    humChart.data.labels = [];
+
     for (let i = 0; i < retrievedData.length; i++) {
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
             tempChart.data.datasets[0].data.push(retrievedData[i].temp);
             tempChart.data.labels.push(retrievedData[i].time_ms);
             tempChart.update();
+
+            humChart.data.datasets[0].data.push(retrievedData[i].hum);
+            humChart.data.labels.push(retrievedData[i].time_ms);
+            humChart.update();
+
             dataTime += resMs;
         }
     }
