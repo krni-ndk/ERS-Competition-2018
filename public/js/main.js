@@ -94,12 +94,14 @@ $(function () {
     });
 
     $("input[name='timeResInput']").change(function () {
-        displayData();
+        if (typeof (retrievedData[0]) != 'undefined')
+            displayChartData();
     });
 });
 
 function getData() {
     let timePeriod = parseInt($("input[name='timePeriod']").val(), 10);
+    let errorElm = document.createElement('p');
     retrievedData = [];
     $.ajax({
         type: 'GET',
@@ -108,27 +110,23 @@ function getData() {
             get_param: 'timePeriod'
         },
         dataType: 'json',
-        success: function (data) {
-            if (data.success == "true") {
-                $.each(data.data, function (index, element) {
-                    retrievedData.push(element);
-                });
-                displayData();
-                console.log(data.success);
-            }
-            if (data.success == "false") {
-                let errorPar = document.createElement('p');
-                let error = document.createTextNode(data.message);
-                errorPar.appendChild(error);
-                document.getElementById('errorContainer').appendChild(errorPar);
-                console.log(data.success);
-            }
-            console.log(data.success);
+        error: function ($aResponse) {
+            let response = $aResponse.responseJSON;
+            alert(response.message);
+        },
+        success: function (aResponse) {
+
+
+            $.each(aResponse.data, function (index, element) {
+                retrievedData.push(element);
+            });
+            displayChartData();
+            displayTableData();
         }
     });
 }
 
-function displayData() {
+function displayChartData() {
     var minTime = retrievedData[0].time_ms;
     var maxTime = retrievedData[retrievedData.length - 1].time_ms;
     let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
@@ -154,6 +152,11 @@ function displayData() {
             dataTime += resMs;
         }
     }
+}
+
+function displayTableData() {
+    let tempTableWrapper = document.getElementById('tempTableWrapper');
+    
 }
 
 function msToTime(aMs) {

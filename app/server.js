@@ -23,7 +23,7 @@ app.get('/', function (aReq, aRes, xErr) {
 
 app.get('/api/data', function (aReq, aRes, xErr) {
     if (xErr) console.log(xErr);
-    
+
     let timePeriod = (parseInt(aReq.query.timePeriod, 10)) * 60 * 1000; // From minutes to miliseconds
     let currentTime = new Date().getTime();
     let reqTime = currentTime - timePeriod;
@@ -39,8 +39,7 @@ app.get('/api/data', function (aReq, aRes, xErr) {
             });
         }
 
-
-        if(typeof(aResults[0]) == 'undefined') {
+        if (typeof (aResults[0]) == 'undefined') {
             aRes.status(404).send({
                 success: "false",
                 message: "Dataset is empty"
