@@ -2,9 +2,6 @@
     height: 30vh;
 }
 
-#tempChart,
-#humChart {}
-
 #hero {
     background-color: lightblue;
     padding: 20px;
@@ -17,10 +14,7 @@
     margin-bottom: 30px;
 }
 
-#hero #timePeriodInput {}
-
-#temperatures,
-#humidity {
+#temperatures {
     padding: 100px;
 }
 
@@ -32,10 +26,10 @@
 
 @media screen and (max-width: 768px) {
 
-    #temperatures,
-    #humidity {
+    #temperatures {
         padding: 25px;
     }
+
     .chartWrapper {
         width: auto;
     }

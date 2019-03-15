@@ -24,8 +24,7 @@ app.get('/', function (aReq, aRes, xErr) {
 app.get('/api/data', function (aReq, aRes, xErr) {
     if (xErr) console.log(xErr);
 
-    if(isNaN(aReq.query.timePeriod))
-    {
+    if (isNaN(aReq.query.timePeriod)) {
         aRes.status(400).send({
             success: "false",
             message: "Invalid data in request"
@@ -37,7 +36,7 @@ app.get('/api/data', function (aReq, aRes, xErr) {
     let currentTime = new Date().getTime();
     let reqTime = currentTime - timePeriod;
 
-    let query = `SELECT temp, hum, time_ms FROM readings WHERE time_ms BETWEEN ${reqTime} AND ${currentTime} ORDER BY time_ms ASC`;
+    let query = `SELECT temp, time_ms FROM readings WHERE time_ms BETWEEN ${reqTime} AND ${currentTime} ORDER BY time_ms ASC`;
 
     dbCon.query(query, function (xError, aResults, aFields) {
         if (xError) {

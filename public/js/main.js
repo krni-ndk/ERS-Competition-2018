@@ -1,11 +1,9 @@
 var retrievedData = [];
 
 var tempChart;
-var humChart;
 
 $(function () {
     let tempChartCTX = document.getElementById('tempChart').getContext('2d');
-    let humChartCTX = document.getElementById('humChart').getContext('2d');
 
     tempChart = new Chart(tempChartCTX, {
         type: 'line',
@@ -41,46 +39,6 @@ $(function () {
                 callbacks: {
                     label: function (toolTips, data) {
                         return toolTips.yLabel + " °C";
-                    }
-                }
-            }
-        }
-    });
-
-    humChart = new Chart(humChartCTX, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Humidity',
-                data: [],
-                backgroundColor: [
-                    'rgba(250, 50, 200, 0.15)'
-                ],
-                borderColor: [
-                    'rgba(250, 0, 100, 1.0)'
-                ],
-                borderWidth: 5
-            }]
-
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false
-                    }
-                }]
-            },
-            tooltips: {
-                callbacks: {
-                    label: function (toolTips, data) {
-                        return toolTips.yLabel + " %";
                     }
                 }
             }
@@ -137,18 +95,12 @@ function displayChartData() {
     // First empty data arrays
     tempChart.data.datasets[0].data = [];
     tempChart.data.labels = [];
-    humChart.data.datasets[0].data = [];
-    humChart.data.labels = [];
 
     for (let i = 0; i < retrievedData.length; i++) {
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
             tempChart.data.datasets[0].data.push(retrievedData[i].temp);
             tempChart.data.labels.push(msToTime(retrievedData[i].time_ms));
             tempChart.update();
-
-            humChart.data.datasets[0].data.push(retrievedData[i].hum);
-            humChart.data.labels.push(msToTime(retrievedData[i].time_ms));
-            humChart.update();
 
             dataTime += resMs;
         }
@@ -163,16 +115,11 @@ function displayTableData() {
     let dataTime = minTime;
 
     $('#tempTable tbody').empty();
-    $('#humTable tbody').empty();
 
     for (let i = 0; i < retrievedData.length; i++) {
         let tempTableRow = document.createElement('tr');
         let tempTableTemp = document.createElement('td');
         let tempTableTime = document.createElement('td');
-
-        let humTableRow = document.createElement('tr');
-        let humTableTemp = document.createElement('td');
-        let humTableTime = document.createElement('td');
 
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
             tempTableTemp.appendChild(document.createTextNode(retrievedData[i].temp));
@@ -180,12 +127,6 @@ function displayTableData() {
             tempTableRow.appendChild(tempTableTime);
             tempTableRow.appendChild(tempTableTemp);
             $('#tempTable').find('tbody').append(tempTableRow);
-
-            humTableTemp.appendChild(document.createTextNode(retrievedData[i].hum));
-            humTableTime.appendChild(document.createTextNode(msToTime(retrievedData[i].time_ms)));
-            humTableRow.appendChild(humTableTime);
-            humTableRow.appendChild(humTableTemp);
-            $('#humTable').find('tbody').append(humTableRow);
 
             dataTime += resMs;
         }
