@@ -1,11 +1,9 @@
 .chartWrapper {
-    width: 40vw;
     height: 30vh;
 }
 
 #tempChart,
-#humChart {
-}
+#humChart {}
 
 #hero {
     background-color: lightblue;
@@ -19,10 +17,30 @@
     margin-bottom: 30px;
 }
 
-#hero #timePeriodInput {
+#hero #timePeriodInput {}
 
+#temperatures,
+#humidity {
+    padding: 100px;
 }
 
-#temperatures, #humidity {
-    padding: 100px;
+.tableWrapper {
+    margin-left: 30px;
+    max-height: 500px !important;
+    overflow: auto;
+}
+
+@media screen and (max-width: 768px) {
+
+    #temperatures,
+    #humidity {
+        padding: 25px;
+    }
+    .chartWrapper {
+        width: auto;
+    }
+
+    .tableWrapper {
+        margin-left: 0;
+    }
 }

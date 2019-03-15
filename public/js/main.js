@@ -96,6 +96,7 @@ $(function () {
     $("input[name='timeResInput']").change(function () {
         if (typeof (retrievedData[0]) != 'undefined')
             displayChartData();
+        displayTableData();
     });
 });
 
@@ -127,11 +128,11 @@ function getData() {
 }
 
 function displayChartData() {
-    var minTime = retrievedData[0].time_ms;
-    var maxTime = retrievedData[retrievedData.length - 1].time_ms;
+    let minTime = retrievedData[0].time_ms;
+    let maxTime = retrievedData[retrievedData.length - 1].time_ms;
     let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
-    var resMs = dataResolution * 1000 // From seconds to miliseconds
-    var dataTime = minTime;
+    let resMs = dataResolution * 1000 // From seconds to miliseconds
+    let dataTime = minTime;
 
     // First empty data arrays
     tempChart.data.datasets[0].data = [];
@@ -155,8 +156,40 @@ function displayChartData() {
 }
 
 function displayTableData() {
-    let tempTableWrapper = document.getElementById('tempTableWrapper');
-    
+    let minTime = retrievedData[0].time_ms;
+    let maxTime = retrievedData[retrievedData.length - 1].time_ms;
+    let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
+    let resMs = dataResolution * 1000 // From seconds to miliseconds
+    let dataTime = minTime;
+
+    $('#tempTable tbody').empty();
+    $('#humTable tbody').empty();
+
+    for (let i = 0; i < retrievedData.length; i++) {
+        let tempTableRow = document.createElement('tr');
+        let tempTableTemp = document.createElement('td');
+        let tempTableTime = document.createElement('td');
+
+        let humTableRow = document.createElement('tr');
+        let humTableTemp = document.createElement('td');
+        let humTableTime = document.createElement('td');
+
+        if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
+            tempTableTemp.appendChild(document.createTextNode(retrievedData[i].temp));
+            tempTableTime.appendChild(document.createTextNode(msToTime(retrievedData[i].time_ms)));
+            tempTableRow.appendChild(tempTableTime);
+            tempTableRow.appendChild(tempTableTemp);
+            $('#tempTable').find('tbody').append(tempTableRow);
+
+            humTableTemp.appendChild(document.createTextNode(retrievedData[i].hum));
+            humTableTime.appendChild(document.createTextNode(msToTime(retrievedData[i].time_ms)));
+            humTableRow.appendChild(humTableTime);
+            humTableRow.appendChild(humTableTemp);
+            $('#humTable').find('tbody').append(humTableRow);
+
+            dataTime += resMs;
+        }
+    }
 }
 
 function msToTime(aMs) {
