@@ -38,7 +38,8 @@ def read_sensor(sensor_path):
                 value = str(float(match.group(2)) / 1000.0)
         sensor_file.close()
     except (IOError) as exception:
-        print(time_.strftime("%x %X"), "Error reading", sensor_path, ": ", exception)
+        print(time_.strftime("%x %X"), "Error reading",
+              sensor_path, ": ", exception)
     return value
 
 
