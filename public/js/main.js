@@ -27,11 +27,6 @@ $(function () {
                     ticks: {
                         beginAtZero: true
                     }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: true
-                    }
                 }]
             },
             tooltips: {

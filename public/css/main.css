@@ -55,7 +55,7 @@ input {
 
     .chartWrapper {
         padding: 0;
-        height: 40vh;
+        height: 45vh;
         width: auto;
     }
 
@@ -64,7 +64,7 @@ input {
     }
 }
 
-@media screen and (max-device-height: 768px) {
+@media screen and (max-device-height: 768px) and (orientation: landscape) {
     .chartWrapper {
         height: 80vh;
     }
