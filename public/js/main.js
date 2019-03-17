@@ -5,6 +5,9 @@ var autoTimer;
 $(function () {
     let tempChartCTX = document.getElementById('tempChart').getContext('2d');
 
+    Chart.defaults.global.defaultFontColor = '#b8b8b8';
+    Chart.defaults.global.defaultFontSize = 13;
+
     tempChart = new Chart(tempChartCTX, {
         type: 'line',
         data: {
@@ -12,16 +15,20 @@ $(function () {
             datasets: [{
                 label: 'Temperature',
                 data: [],
-                backgroundColor: 'rgba(200, 100, 200, 0.20)',
-                borderColor: 'rgba(200, 100, 200, 0.20)',
+                backgroundColor: 'rgba(73,205,228, 0.5)',
+                borderColor: 'rgba(73,205,228, 0.95)',
                 hitRadius: 5,
-                borderWidth: 5
+                borderWidth: 3
             }]
 
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 200,
+                easing: 'easeInOutSine'
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -29,10 +36,13 @@ $(function () {
                     }
                 }]
             },
+            legend: {
+                display: false
+            },
             tooltips: {
                 callbacks: {
-                    label: function (toolTips, data) {
-                        return toolTips.yLabel + " °C";
+                    label: function (toolTip) {
+                        return toolTip.yLabel + " °C";
                     }
                 }
             }
@@ -45,16 +55,20 @@ $(function () {
     });
 
     $("#autoRefresh").click(function () {
-        let dataResolution = parseInt($("input[name='timeResInput']").val(), 10) * 1000; // miliseconds to seconds
         if (document.getElementById('autoRefresh').checked) {
-            autoTimer = setInterval(function () {
-                getData();
-            }, dataResolution);
+            $("#autoRefreshInput").prop('disabled', '');
+            $("#autoRefreshInput").change(function () {
+                autoRefresh();
+            });
+            autoRefresh();
         } else {
+            $("#autoRefreshInput").prop('disabled', 'disabled');
             clearInterval(autoTimer);
             autoTimer = null;
         }
     });
+
+
 
     $("input[name='timeResInput']").change(function () {
         if (typeof (retrievedData[0]) != 'undefined')
@@ -87,7 +101,6 @@ function validateForm() {
 function getData() {
     let timePeriod = parseInt($("input[name='timePeriod']").val(), 10);
     let statusElm = document.getElementById('statusElm');
-    console.log("Data");
     retrievedData = [];
     $.ajax({
         type: 'GET',
@@ -122,18 +135,16 @@ function displayData() {
     let dataTime = minTime;
 
     // First empty data
-    tempChart.data.datasets[0].data = [];
-    tempChart.data.labels = [];
     $('#tempTable tbody').empty();
 
-    for (let i = 0; i < retrievedData.length; i++) {
+    for (let i = 0, j = 0; i < retrievedData.length; i++) {
         let tempTableRow = document.createElement('tr');
         let tempTableTemp = document.createElement('td');
         let tempTableTime = document.createElement('td');
 
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
-            tempChart.data.datasets[0].data.push(retrievedData[i].temp);
-            tempChart.data.labels.push(convertMsToTime(retrievedData[i].time_ms));
+            tempChart.data.datasets[0].data[j] = retrievedData[i].temp;
+            tempChart.data.labels[j] = convertMsToTime(retrievedData[i].time_ms);
             tempChart.update();
 
             tempTableTemp.appendChild(document.createTextNode(retrievedData[i].temp));
@@ -143,6 +154,7 @@ function displayData() {
             $('#tempTable').find('tbody').append(tempTableRow);
 
             dataTime += resMs;
+            j++;
         }
     }
 }
@@ -151,4 +163,13 @@ function convertMsToTime(aMs) {
     let date = new Date(aMs);
     let date_txt = date.toLocaleTimeString('sl-SI');
     return date_txt;
+}
+
+function autoRefresh() {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    let refreshInterval = parseInt($("#autoRefreshInput").val(), 10) * 1000; // Conversion from seconds to miliseconds
+    autoTimer = setInterval(function () {
+        getData();
+    }, refreshInterval);
 }

@@ -1,3 +1,9 @@
+/* Global */
+
+body {
+    background: linear-gradient(#f1f4fb, #eff4fa);
+}
+
 label {
     user-select: none;
     cursor: pointer;
@@ -5,23 +11,47 @@ label {
 
 input {
     margin: 5px;
-    padding: 5px 10px 5px 10px;
 }
 
+/* Hero */
+
 #hero {
-    background-color: lightblue;
+    background-color: #fff;
     padding: 20px;
-    text-align: center;
 }
 
 #hero h2 {
-    text-align: center;
-    color: #333;
+    color: #333333;
     margin-bottom: 30px;
 }
 
+#hero input[type="number"] {
+    padding: 5px 10px 5px 10px;
+    width: 100px;
+}
+
+/* Auto refresh */
+#autoRefreshInput {
+    padding: 0px 5px 0px 5px;
+    width: 90px;
+}
+
+/* Content */
+
+.card {
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 90px 25px 65px 25px;
+    box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
 #temperatures {
-    padding: 100px;
+    margin: 30px 0 50px 0;
+}
+
+#temperatures h3 {
+    color: #1564fd;
 }
 
 #statusElm {
@@ -30,9 +60,24 @@ input {
     text-align: center;
 }
 
+/* Checkbox */
+#autoRefreshLabel {
+    font-size: 16px;
+}
+
+#autoRefresh {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Data */
+
 .chartWrapper {
     width: 100%;
     height: auto;
+    margin-top: 55px;
+    margin-bottom: 75px;
 }
 
 #tempChart {
@@ -43,20 +88,59 @@ input {
 .tableWrapper {
     margin-top: 40px;
     margin-left: 30px;
-    max-height: 500px !important;
+    max-height: 85vh !important;
     overflow: auto;
 }
 
+#tempTable {
+    font-size: 16px;
+    color: #333;
+}
+
+#tempTable tr:hover {
+    background-color: rgba(33, 33, 33, 0.05);
+    transition: all 100ms ease-in;
+}
+
+#tempTable #thead-row {
+    background: none;
+}
+
+#tempTable td {
+    font-weight: 400;
+    user-select: none;
+}
+
+#tempTable th {
+    font-weight: 500;
+    border-top: none;
+    border-bottom-color: rgba(33, 33, 33, 0.2);
+    user-select: none;
+}
+
+#tempTable th:hover {
+    border-bottom-color: #1564fd;
+    transition: all 200ms ease-in;
+}
+
 @media screen and (max-width: 768px) {
+    .card {
+        padding-top: 55px;
+    }
 
     #temperatures {
-        padding: 40px 5px 5px 5px;
+        margin: 30px 5px 5px 5px;
+    }
+
+    #autoRefreshLabel {
+        margin-top: 10px;
     }
 
     .chartWrapper {
         padding: 0;
         height: 45vh;
         width: auto;
+        margin-bottom: 45px;
     }
 
     .tableWrapper {
@@ -68,4 +152,12 @@ input {
     .chartWrapper {
         height: 80vh;
     }
+}
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding-bottom: 5px;
+    color: rgba(33, 33, 33, 0.5);
 }

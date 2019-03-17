@@ -13,45 +13,57 @@
 <body>
     <section id="hero">
         <div class="container">
-            <h2>Choose a time:</h2>
+            <h2>Nastavitve:</h2>
             <form name="timeForm" method="GET" action="/api/data" onsubmit="return validateForm();">
                 <label class="timeLabel">
-                    Custom (min):
-                    <input type="number" name="timePeriod" min="1" value="15">
-                    <input type="submit" name="submit" value="Get data">
+                    Pridobi podatke za zadnjih:
+                    <input type="number" name="timePeriod" min="1" value="15">minut.
                 </label><br>
                 <label class="timeRes">
-                    Custom resolution (sec):
-                    <input type="number" name="timeResInput" min="5" value="5">
-                    <label>Auto refresh&nbsp;<input id="autoRefresh" type="checkbox" name="autoRefresh"></label>
-                </label>
+                    Enota podatkov:
+                    <input type="number" name="timeResInput" min="5" value="60">sekund.
+                </label><br>
                 <p id="statusElm"></p>
+                <input type="submit" name="submit" value="Pošlji poizvedbo">
             </form>
         </div>
     </section>
     <section id="temperatures">
-        <div class="container">
-            <h3>Temperature:</h3>
+        <div class="container card">
+            <div class="row">
+                <div class="col-md-7">
+                    <h3>Grafičen prikaz:</h3>
+                </div>
+                <div class="col-md-5">
+                    <form name="autoRefreshForm">
+                        <input type="checkbox" id="autoRefresh" name="autoRefresh">
+                        <label for="autoRefresh" id="autoRefreshLabel">Samodejno osveževanje vsakih: </label>
+                        <input type="number" id="autoRefreshInput" name="autoRefreshInput" min="1" value="5" disabled>sekund.
+                    </form>
+                </div>
+            </div>
             <div class="chartWrapper col-md-12">
                 <canvas id="tempChart"></canvas>
             </div>
+            <h3>Tabela podatkov:</h3>
             <div class="col-md-12">
                 <div class="tableWrapper">
-                    <table id="tempTable" class="table table-dark table-bordered">
+                    <table id="tempTable" class="table">
                         <thead>
-                            <tr>
-                                <th>Time (hh:mm:ss)</th>
-                                <th>Temperature &deg;C</th>
+                            <tr id="thead-row">
+                                <th>Čas</th>
+                                <th>Temperatura (&deg;C)</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </section>
+    <footer>
+        <p>&copy; 2019 Niko Kriznik &amp; Nejc Strelec</p>
+    </footer>
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

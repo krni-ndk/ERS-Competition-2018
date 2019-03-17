@@ -35,7 +35,6 @@ app.get('/api/data', function (aReq, aRes, xErr) {
     let timePeriod = (parseInt(aReq.query.timePeriod, 10)) * 60 * 1000; // From minutes to miliseconds
     let currentTime = new Date().getTime();
     let reqTime = currentTime - timePeriod;
-
     let query = `SELECT temp, time_ms FROM readings WHERE time_ms BETWEEN ${reqTime} AND ${currentTime} ORDER BY time_ms ASC`;
 
     dbCon.query(query, function (xError, aResults, aFields) {
