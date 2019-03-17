@@ -2,11 +2,11 @@
 
 ### SSH with public key:
 First generate keys with PuttyGen. Then save the private key and public key (both). 
-##### Making Putty public key compatible:
+##### Making Putty public key compatible with OpenSSH:
   - Remove 'BEGIN' and 'END'
   - Make it all one line
-  - Add 'ssh-rsa' and then a space at the start
-  - Add a space and then text in the comment at the end (e.g. rsa-key-20190317)
+  - Add 'ssh-rsa' and a space at the start
+  - Add a space and text in the comment at the end (e.g. rsa-key-20190317)
 ##### Putty:
   - Session -> Hostname + Port
   - Connection -> Data -> Auto-login username
