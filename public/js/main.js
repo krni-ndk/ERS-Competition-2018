@@ -12,12 +12,9 @@ $(function () {
             datasets: [{
                 label: 'Temperature',
                 data: [],
-                backgroundColor: [
-                    'rgba(200, 100, 200, 0.15)'
-                ],
-                borderColor: [
-                    'rgba(200, 50, 100, 1.0)'
-                ],
+                backgroundColor: 'rgba(200, 100, 200, 0.20)',
+                borderColor: 'rgba(200, 100, 200, 0.20)',
+                hitRadius: 5,
                 borderWidth: 5
             }]
 
