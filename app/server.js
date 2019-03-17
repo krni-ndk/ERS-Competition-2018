@@ -41,14 +41,14 @@ app.get('/api/data', function (aReq, aRes, xErr) {
     dbCon.query(query, function (xError, aResults, aFields) {
         if (xError) {
             console.log(xError);
-            aRes.status(500).send({
+            aRes.status(503).send({
                 success: "false",
                 message: "An error occured while retrieving the data"
             });
         }
 
         if (typeof (aResults[0]) == 'undefined') {
-            aRes.status(404).send({
+            aRes.status(200).send({
                 success: "false",
                 message: "Dataset is empty"
             });
@@ -63,7 +63,6 @@ app.get('/api/data', function (aReq, aRes, xErr) {
 });
 
 app.listen(PORT, function (xErr) {
-    if (xErr) throw xErr;
-
+    if (xErr) console.log(xErr);
     console.log(`Server started on ${dbConfig.host} port ${PORT}`);
 });

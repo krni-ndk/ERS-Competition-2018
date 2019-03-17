@@ -1,5 +1,4 @@
 var retrievedData = [];
-
 var tempChart;
 
 $(function () {
@@ -47,20 +46,40 @@ $(function () {
     getData();
 
     $("form[name='timeForm']").submit(function (e) {
-        e.preventDefault(); // Disables redirect
-        getData();
+        e.preventDefault(); // Disables redirect        
     });
 
     $("input[name='timeResInput']").change(function () {
         if (typeof (retrievedData[0]) != 'undefined')
-            displayChartData();
-        displayTableData();
+            displayData();
     });
 });
 
+function validateForm() {
+    let timeForm = document.forms["timeForm"];
+    let timePeriodInput = timeForm["timePeriod"];
+    let errorElm = document.getElementById('statusElm');
+
+    if ((timePeriodInput.value).trim() == "") {
+        errorElm.innerHTML = 'Vnesite vrednost!';
+        return false;
+    } else if (isNaN(timePeriodInput.value)) {
+        errorElm.innerHTML = 'Vnos je lahko samo število!';
+        return false;
+    }
+    if (parseInt(timePeriodInput.value, 10) < 1) {
+        errorElm.innerHTML = 'Vnesite vrednost večjo kot 1!';
+        return false;
+    }
+    errorElm.innerHTML = "";
+    getData();
+
+    return true;
+}
+
 function getData() {
     let timePeriod = parseInt($("input[name='timePeriod']").val(), 10);
-    let errorElm = document.createElement('p');
+    let statusElm = document.getElementById('statusElm');
     retrievedData = [];
     $.ajax({
         type: 'GET',
@@ -71,49 +90,32 @@ function getData() {
         dataType: 'json',
         error: function ($aResponse) {
             let response = $aResponse.responseJSON;
-            alert(response.message);
+            statusElm.innerHTML = response.message;
         },
         success: function (aResponse) {
-
-
-            $.each(aResponse.data, function (index, element) {
-                retrievedData.push(element);
-            });
-            displayChartData();
-            displayTableData();
+            let succes = $.parseJSON(aResponse.success);
+            if (succes) {
+                $.each(aResponse.data, function (index, element) {
+                    retrievedData.push(element);
+                });
+                displayData();
+            } else {
+                statusElm.innerHTML = aResponse.message;
+            }
         }
     });
 }
 
-function displayChartData() {
+function displayData() {
     let minTime = retrievedData[0].time_ms;
     let maxTime = retrievedData[retrievedData.length - 1].time_ms;
     let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
     let resMs = dataResolution * 1000 // From seconds to miliseconds
     let dataTime = minTime;
 
-    // First empty data arrays
+    // First empty data
     tempChart.data.datasets[0].data = [];
     tempChart.data.labels = [];
-
-    for (let i = 0; i < retrievedData.length; i++) {
-        if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
-            tempChart.data.datasets[0].data.push(retrievedData[i].temp);
-            tempChart.data.labels.push(msToTime(retrievedData[i].time_ms));
-            tempChart.update();
-
-            dataTime += resMs;
-        }
-    }
-}
-
-function displayTableData() {
-    let minTime = retrievedData[0].time_ms;
-    let maxTime = retrievedData[retrievedData.length - 1].time_ms;
-    let dataResolution = parseInt($("input[name='timeResInput']").val(), 10);
-    let resMs = dataResolution * 1000 // From seconds to miliseconds
-    let dataTime = minTime;
-
     $('#tempTable tbody').empty();
 
     for (let i = 0; i < retrievedData.length; i++) {
@@ -122,8 +124,12 @@ function displayTableData() {
         let tempTableTime = document.createElement('td');
 
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
+            tempChart.data.datasets[0].data.push(retrievedData[i].temp);
+            tempChart.data.labels.push(convertMsToTime(retrievedData[i].time_ms));
+            tempChart.update();
+
             tempTableTemp.appendChild(document.createTextNode(retrievedData[i].temp));
-            tempTableTime.appendChild(document.createTextNode(msToTime(retrievedData[i].time_ms)));
+            tempTableTime.appendChild(document.createTextNode(convertMsToTime(retrievedData[i].time_ms)));
             tempTableRow.appendChild(tempTableTime);
             tempTableRow.appendChild(tempTableTemp);
             $('#tempTable').find('tbody').append(tempTableRow);
@@ -133,25 +139,8 @@ function displayTableData() {
     }
 }
 
-function msToTime(aMs) {
+function convertMsToTime(aMs) {
     let date = new Date(aMs);
     let txt = date.toLocaleTimeString('sl-SI');
     return txt;
-}
-
-function valForm() {
-    let timeForm = document.forms["timeForm"];
-    let timePeriodInput = timeForm["timePeriod"];
-    let errorCon = document.getElementById('errorContainer');
-    let errorText;
-    if (timePeriodInput.value == "") {
-        errorText = document.createElement('p');
-        let errorTextNode = document.createTextNode('Vnesite vrednost, ki naj bo vecja kot 1 min');
-        errorText.appendChild(errorTextNode);
-        errorCon.appendChild(errorText);
-
-        return false;
-    }
-    errorCon.removeChild(errorText);
-    return true;
 }

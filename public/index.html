@@ -14,7 +14,7 @@
     <section id="hero">
         <div class="container">
             <h2>Choose a time:</h2>
-            <form name="timeForm" method="GET" action="/api/data">
+            <form name="timeForm" method="GET" action="/api/data" onsubmit="return validateForm();">
                 <label class="timeLabel">
                     Custom (min):
                     <input type="number" name="timePeriod" min="1" value="15">
@@ -26,6 +26,7 @@
                 Custom resolution (sec):
                 <input type="number" name="timeResInput" min="5" value="5">
             </label>
+            <p id="statusElm" style="text-align: center;"></p>
         </div>
     </section>
     <section id="temperatures">
