@@ -1,5 +1,6 @@
 var retrievedData = [];
 var tempChart;
+var autoTimer;
 
 $(function () {
     let tempChartCTX = document.getElementById('tempChart').getContext('2d');
@@ -22,6 +23,8 @@ $(function () {
 
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 yAxes: [{
                     ticks: {
@@ -30,7 +33,7 @@ $(function () {
                 }],
                 xAxes: [{
                     gridLines: {
-                        display: false
+                        display: true
                     }
                 }]
             },
@@ -47,6 +50,18 @@ $(function () {
 
     $("form[name='timeForm']").submit(function (e) {
         e.preventDefault(); // Disables redirect        
+    });
+
+    $("#autoRefresh").click(function () {
+        let dataResolution = parseInt($("input[name='timeResInput']").val(), 10) * 1000; // miliseconds to seconds
+        if (document.getElementById('autoRefresh').checked) {
+            autoTimer = setInterval(function () {
+                getData();
+            }, dataResolution);
+        } else {
+            clearInterval(autoTimer);
+            autoTimer = null;
+        }
     });
 
     $("input[name='timeResInput']").change(function () {
@@ -80,6 +95,7 @@ function validateForm() {
 function getData() {
     let timePeriod = parseInt($("input[name='timePeriod']").val(), 10);
     let statusElm = document.getElementById('statusElm');
+    console.log("Data");
     retrievedData = [];
     $.ajax({
         type: 'GET',
@@ -141,6 +157,6 @@ function displayData() {
 
 function convertMsToTime(aMs) {
     let date = new Date(aMs);
-    let txt = date.toLocaleTimeString('sl-SI');
-    return txt;
+    let date_txt = date.toLocaleTimeString('sl-SI');
+    return date_txt;
 }
