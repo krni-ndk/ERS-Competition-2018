@@ -19,15 +19,14 @@
                     Custom (min):
                     <input type="number" name="timePeriod" min="1" value="15">
                     <input type="submit" name="submit" value="Get data">
+                </label><br>
+                <label class="timeRes">
+                    Custom resolution (sec):
+                    <input type="number" name="timeResInput" min="5" value="5">
+                    <label>Auto refresh&nbsp;<input id="autoRefresh" type="checkbox" name="autoRefresh"></label>
                 </label>
+                <p id="statusElm"></p>
             </form>
-            <div id="errorContainer"></div>
-            <label class="timeRes">
-                Custom resolution (sec):
-                <input type="number" name="timeResInput" min="5" value="5">
-                <label>Auto refresh&nbsp;<input id="autoRefresh" type="checkbox" name="autoRefresh"></label>
-            </label>
-            <p id="statusElm" style="text-align: center;"></p>
         </div>
     </section>
     <section id="temperatures">
@@ -36,7 +35,7 @@
             <div class="chartWrapper col-md-12">
                 <canvas id="tempChart"></canvas>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="tableWrapper">
                     <table id="tempTable" class="table table-dark table-bordered">
                         <thead>

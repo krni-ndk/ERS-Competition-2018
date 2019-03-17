@@ -14,8 +14,12 @@
     padding: 100px;
 }
 
+#statusElm {
+    text-align: center;
+    color: orangered;
+}
+
 .chartWrapper {
-    padding: 0;
     width: 100%;
     height: auto;
 }
@@ -26,6 +30,7 @@
 }
 
 .tableWrapper {
+    margin-top: 40px;
     margin-left: 30px;
     max-height: 500px !important;
     overflow: auto;
@@ -36,17 +41,27 @@ label {
     cursor: pointer;
 }
 
+
+
 @media screen and (max-width: 768px) {
 
     #temperatures {
-        padding: 5px;
+        padding: 40px 5px 5px 5px;
     }
 
     .chartWrapper {
+        padding: 0;
+        height: 40vh;
         width: auto;
     }
 
     .tableWrapper {
         margin-left: 0;
+    }
+}
+
+@media screen and (max-device-height: 768px) {
+    .chartWrapper {
+        height: 80vh;
     }
 }
