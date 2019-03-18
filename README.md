@@ -15,3 +15,11 @@ First generate keys with PuttyGen. Then save the private key and public key (bot
   - Copy public key into: /home/pi/.ssh/authorized_keys
   - Change permisions: chmod 600 /home/pi/.ssh/authorized_keys
   - Change ownership: chown -R user:user /home/pi/.ssh/authorized_keys
+
+### Convert MySQL timestamp to javascript date:
+  ```javascript
+  var mysql_timestamp = "2010-06-09 13:12:01";
+  var ts = timestamp.split(/[- :]/);
+  var time = new Date(Date.UTC(ts[0], ts[1], ts[2], ts[3], ts[4], ts[5])).toLocaleTimeString('sl-SI');
+  console.log(time); // 15:12:01
+  ```
