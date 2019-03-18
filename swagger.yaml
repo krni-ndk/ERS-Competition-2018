@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3000"
+basePath: "/api/v1"
+tags:
+- name: "Data"
+schemes:
+# - "https"
+- "http"
+paths:
+  '/data':
+    get:
+      tags: 
+        - 'Data'
+      description: "Gets data"
+      parameters:
+        - name: timePeriod
+          in: query
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'Data 200 response'
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      
+definitions:
+  ApiResponse:
+    type: "object"
+    properties:
+      success:
+        type: "string"
+      message:
+        type: "string"
+      data:
+        type: "array"
+        items:
+          type: "object"
+    required:
+      - success
+      - message
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

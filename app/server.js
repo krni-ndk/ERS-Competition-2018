@@ -28,7 +28,7 @@ app.get('/', function (aReq, aRes, xErr) {
     aRes.status(200).sendFile(path.join(__dirname + "/../public/index.html"));
 });
 
-app.get('/api/data', function (aReq, aRes, xErr) {
+app.get('/api/v1/data', function (aReq, aRes, xErr) {
     if (xErr) console.log(xErr);
 
     if (isNaN(aReq.query.timePeriod)) {
@@ -53,7 +53,7 @@ app.get('/api/data', function (aReq, aRes, xErr) {
             });
         }
 
-        if (typeof (aResults) == 'undefined' || typeof (aResults[0]) == 'undefined') {
+        if (aResults[0] == null) {
             aRes.status(200).send({
                 success: "false",
                 message: "Dataset is empty"
