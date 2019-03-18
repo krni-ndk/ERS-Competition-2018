@@ -2,9 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mysql = require('mysql');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
 
 const PORT = 3000;
-const dbConfig = require('./database-config');
+const dbConfig = {
+    host: "localhost",
+    user: "user",
+    password: "pass",
+    database: "sensor_v1"
+};
 
 const app = express();
 app.use(bodyParser.json());
@@ -46,7 +53,7 @@ app.get('/api/data', function (aReq, aRes, xErr) {
             });
         }
 
-        if (typeof (aResults[0]) == 'undefined') {
+        if (typeof (aResults) == 'undefined' || typeof (aResults[0]) == 'undefined') {
             aRes.status(200).send({
                 success: "false",
                 message: "Dataset is empty"
@@ -60,6 +67,8 @@ app.get('/api/data', function (aReq, aRes, xErr) {
         }
     });
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(PORT, function (xErr) {
     if (xErr) console.log(xErr);

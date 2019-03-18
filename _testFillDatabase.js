@@ -1,5 +1,11 @@
 const mysql = require('mysql');
-const dbConfig = require('./app/database-config');
+
+const dbConfig = {
+    host: "localhost",
+    user: "user",
+    password: "pass",
+    database: "sensor_v1"
+};
 
 const dbCon = mysql.createConnection(dbConfig);
 
@@ -15,4 +21,4 @@ setInterval(function () {
         if (xError) console.log(xError);
         console.log(query);
     });
-}, 1000);
+}, 5000);
