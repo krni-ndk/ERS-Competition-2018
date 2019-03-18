@@ -23,3 +23,11 @@ First generate keys with PuttyGen. Then save the private key and public key (bot
   var time = new Date(Date.UTC(ts[0], ts[1], ts[2], ts[3], ts[4], ts[5])).toLocaleTimeString('sl-SI');
   console.log(time); // 15:12:01
   ```
+### Swagger:
+  - Host should be the network IP
+  - Port should be the portforwarded port of the NodeJs server 
+  - BasePath should be the relative path to the api
+  ```json
+  "host": "192.168.1.120:3000",
+  "basePath": "/api/v1",
+  ```

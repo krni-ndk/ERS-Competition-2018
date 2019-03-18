@@ -104,7 +104,7 @@ function getData() {
     retrievedData = [];
     $.ajax({
         type: 'GET',
-        url: `/api/data?timePeriod=${timePeriod}`,
+        url: `/api/v1/data?timePeriod=${timePeriod}`,
         data: {
             get_param: 'timePeriod'
         },
