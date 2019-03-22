@@ -28,7 +28,7 @@
             </form>
         </div>
     </section>
-    <section id="temperatures">
+    <section id="graph-data">
         <div class="container card">
             <div class="row">
                 <div class="col-md-7">
@@ -38,13 +38,23 @@
                     <form name="autoRefreshForm">
                         <input type="checkbox" id="autoRefresh" name="autoRefresh">
                         <label for="autoRefresh" id="autoRefreshLabel">Samodejno osveževanje vsakih: </label>
-                        <input type="number" id="autoRefreshInput" name="autoRefreshInput" min="1" value="5" disabled>sekund.
+                        <input type="number" id="autoRefreshInput" name="autoRefreshInput" min="1" value="5"
+                            disabled>sekund.
                     </form>
                 </div>
             </div>
+            <h5>Temperatura:</h5>
             <div class="chartWrapper col-md-12">
                 <canvas id="tempChart"></canvas>
             </div>
+            <h5>Vlažnost:</h5>
+            <div class="chartWrapper col-md-12">
+                <canvas id="humChart"></canvas>
+            </div>
+        </div>
+    </section>
+    <section id="table-data">
+        <div class="container card">
             <h3>Tabela podatkov:</h3>
             <div class="col-md-12">
                 <div class="tableWrapper">
@@ -53,6 +63,7 @@
                             <tr id="thead-row">
                                 <th>Čas</th>
                                 <th>Temperatura (&deg;C)</th>
+                                <th>Vlažnost (&percnt;)</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

@@ -1,9 +1,11 @@
 var retrievedData = [];
 var tempChart;
+var humChart;
 var autoTimer;
 
 $(function () {
     let tempChartCTX = document.getElementById('tempChart').getContext('2d');
+    let humChartCTX = document.getElementById('humChart').getContext('2d');
 
     Chart.defaults.global.defaultFontColor = '#b8b8b8';
     Chart.defaults.global.defaultFontSize = 13;
@@ -13,7 +15,7 @@ $(function () {
         data: {
             labels: [],
             datasets: [{
-                label: 'Temperature',
+                label: 'Temperatura',
                 data: [],
                 backgroundColor: 'rgba(73,205,228, 0.5)',
                 borderColor: 'rgba(73,205,228, 0.95)',
@@ -48,6 +50,48 @@ $(function () {
             }
         }
     });
+
+    humChart = new Chart(humChartCTX, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Vlažnost',
+                data: [],
+                backgroundColor: 'rgba(73,205,228, 0.5)',
+                borderColor: 'rgba(73,205,228, 0.95)',
+                hitRadius: 5,
+                borderWidth: 3
+            }]
+
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 200,
+                easing: 'easeInOutSine'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (toolTip) {
+                        return toolTip.yLabel + " %";
+                    }
+                }
+            }
+        }
+    });
+
     getData();
 
     $("form[name='timeForm']").submit(function (e) {
@@ -138,20 +182,32 @@ function displayData() {
     $('#tempTable tbody').empty();
 
     for (let i = 0, j = 0; i < retrievedData.length; i++) {
-        let tempTableRow = document.createElement('tr');
-        let tempTableTemp = document.createElement('td');
-        let tempTableTime = document.createElement('td');
-
         if ((dataTime <= maxTime) && retrievedData[i].time_ms >= dataTime) {
-            tempChart.data.datasets[0].data[j] = retrievedData[i].temp;
-            tempChart.data.labels[j] = convertMsToTime(retrievedData[i].time_ms);
-            tempChart.update();
+            let time = convertMsToTime(retrievedData[i].time_ms);
+            let temp = retrievedData[i].temp;
+            let hum = retrievedData[i].hum;
 
-            tempTableTemp.appendChild(document.createTextNode(retrievedData[i].temp));
-            tempTableTime.appendChild(document.createTextNode(convertMsToTime(retrievedData[i].time_ms)));
-            tempTableRow.appendChild(tempTableTime);
-            tempTableRow.appendChild(tempTableTemp);
-            $('#tempTable').find('tbody').append(tempTableRow);
+            let tableRow = document.createElement('tr');
+            let tableTime = document.createElement('td');
+            let tableTemp = document.createElement('td');
+            let tableHum = document.createElement('td');
+
+            tempChart.data.datasets[0].data[j] = temp;
+            tempChart.data.labels[j] = time;
+            tempChart.update();
+            humChart.data.datasets[0].data[j] = hum;
+            humChart.data.labels[j] = time;
+            humChart.update();
+
+            tableTime.appendChild(document.createTextNode(time));
+            tableTemp.appendChild(document.createTextNode(temp));
+            tableHum.appendChild(document.createTextNode(hum));
+
+            tableRow.appendChild(tableTime);
+            tableRow.appendChild(tableTemp);
+            tableRow.appendChild(tableHum);
+
+            $('#tempTable').find('tbody').append(tableRow);
 
             dataTime += resMs;
             j++;

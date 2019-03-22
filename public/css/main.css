@@ -46,11 +46,11 @@ input {
     box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
-#temperatures {
+#graph-data, #table-data {
     margin: 30px 0 50px 0;
 }
 
-#temperatures h3 {
+#graph-data h3, #table-data h3 {
     color: #1564fd;
 }
 
@@ -80,7 +80,7 @@ input {
     margin-bottom: 75px;
 }
 
-#tempChart {
+#tempChart, #humChart {
     width: 100%;
     height: 100%;
 }
